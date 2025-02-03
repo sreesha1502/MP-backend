@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.vegobject</groupId>
-	<artifactId>vegobject</artifactId>
+	<artifactId>springboot-mongodb</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>vegobject</name>
+	<name>springboot-mongodb</name>
 	<description>application to create API for the save and read data </description>
 	<url/>
 	<licenses>
