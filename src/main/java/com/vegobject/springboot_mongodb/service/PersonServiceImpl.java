@@ -12,8 +12,7 @@ public class PersonServiceImpl implements PersonService {
     @Autowired
     private  PersonRepository personRepository; 
 
-    @Override
     public String savePerson(Person person) {
-        return  personRepository.save(person).toString();
+        return  "Person saved " + personRepository.save(person).toString() + "saved";
     }
 }
