@@ -1,6 +1,7 @@
 package com.vegobject.springboot_mongodb.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,5 +21,10 @@ public class PersonController {
     public String savePerson(@RequestBody Person person) {
         return personService.savePerson(person);
         
+    }
+
+    @GetMapping
+    public String getPerson() {
+        return personService.getPerson();
     }
 }

@@ -6,4 +6,6 @@ public interface PersonService{
 
     String savePerson(Person person);
 
+    String getPerson();
+
 }

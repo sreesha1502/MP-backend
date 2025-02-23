@@ -15,4 +15,8 @@ public class PersonServiceImpl implements PersonService {
     public String savePerson(Person person) {
         return  "Person saved " + personRepository.save(person).toString() + "saved";
     }
+
+    public String getPerson() {
+        return "Person fetched " + personRepository.findAll().toString();
+    }
 }
