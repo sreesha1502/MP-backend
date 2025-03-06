@@ -1,9 +1,0 @@
-services:
-  mongodb:
-    image: 'mongodb/mongodb-community-server:latest'
-    environment:
-      - 'MONGODB_INITDB_DATABASE=demo'
-      - 'MONGODB_INITDB_ROOT_PASSWORD=sree123'
-      - 'MONGODB_INITDB_ROOT_USERNAME=admin'
-    ports:
-      - '27017'
