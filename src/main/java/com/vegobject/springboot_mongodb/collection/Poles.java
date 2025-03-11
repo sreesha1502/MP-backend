@@ -18,7 +18,7 @@ public class Poles {
     private String id;
     private double altitude;
     private int speed;
-    // private Geometry geometry;
+    private Geometry geometry;
 
 
 }

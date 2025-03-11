@@ -7,7 +7,7 @@ import com.vegobject.springboot_mongodb.repository.PolesRepository;
 
 
 @Service
-public class PolesServiceImpl {
+public class PolesServiceImpl  implements PolesService{
 
     @Autowired
     private PolesRepository polesRepository;
