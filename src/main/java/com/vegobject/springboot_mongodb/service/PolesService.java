@@ -1,6 +1,8 @@
 package com.vegobject.springboot_mongodb.service;
 
+import com.vegobject.springboot_mongodb.collection.Poles;
+
 public interface PolesService {
 
-    String getPoles();
+    Poles[] getPoles();
 }
