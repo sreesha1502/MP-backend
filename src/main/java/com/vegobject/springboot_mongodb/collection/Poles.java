@@ -19,6 +19,8 @@ public class Poles {
     private double altitude;
     private int speed;
     private Geometry gps;
+    private double hdop;
+    private String capturedDate;
 
 
 }
