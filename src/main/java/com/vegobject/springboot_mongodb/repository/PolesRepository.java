@@ -1,7 +1,10 @@
 package com.vegobject.springboot_mongodb.repository;
 
+import java.util.List;
+
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 
 import com.vegobject.springboot_mongodb.collection.CapturedDates;
 import com.vegobject.springboot_mongodb.collection.Poles;
@@ -24,5 +27,6 @@ public interface PolesRepository extends MongoRepository<Poles,String>{
     CapturedDates findAllCapturedDate();
 
 
-
+    @Query("{capturedDate:'?0'}")
+    List<Poles> findAllByCapturedDate(String capturedDate);
 }

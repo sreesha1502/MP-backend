@@ -3,12 +3,14 @@ package com.vegobject.springboot_mongodb.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vegobject.springboot_mongodb.collection.CapturedDates;
 import com.vegobject.springboot_mongodb.collection.Poles;
 import com.vegobject.springboot_mongodb.service.PolesService;
+
 
 @RestController
 @RequestMapping("/poles")
@@ -21,6 +23,11 @@ public class PolesController {
     @GetMapping
     public Poles[] getPoles() {
         return polesService.getPoles();
+    }
+
+    @GetMapping("/{cdate}")
+    public Poles[] getPolesByDate(@PathVariable long cdate) {
+        return polesService.getPolesByDate(cdate);
     }
 
     @GetMapping

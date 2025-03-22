@@ -7,5 +7,7 @@ public interface PolesService {
 
     Poles[] getPoles();
 
+    Poles[] getPolesByDate(long cdate);
+
     CapturedDates getCapturedDateStrings();
 }
