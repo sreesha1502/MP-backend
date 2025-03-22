@@ -6,12 +6,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vegobject.springboot_mongodb.collection.CapturedDates;
 import com.vegobject.springboot_mongodb.collection.Poles;
 import com.vegobject.springboot_mongodb.service.PolesService;
 
 @RestController
 @RequestMapping("/poles")
-@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:8080", "http://dt14.idi.ntnu.no:8080"})
+@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:8080", "http://dt14.idi.ntnu.no:8080" })
 public class PolesController {
 
     @Autowired
@@ -20,5 +21,11 @@ public class PolesController {
     @GetMapping
     public Poles[] getPoles() {
         return polesService.getPoles();
+    }
+
+    @GetMapping
+    @RequestMapping("/capturedDates")
+    public CapturedDates getCapturedDateStrings() {
+        return polesService.getCapturedDateStrings();
     }
 }
