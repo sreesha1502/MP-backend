@@ -27,8 +27,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableAsync
 @PropertySource(value = "classpath:application.properties")
 public class KafkaConsumer {
-    @Value(value="${kafka.consumer.id}")
-    private String kafkaConsumerId;
+   
 
     private MongoClient mongoClient;
     private MongoDatabase database;
@@ -38,10 +37,10 @@ public class KafkaConsumer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaConsumer.class);
 
-    // KafkaConsumer(@Value("${spring.data.mongodb.uri}") String mongoUri, @Value("${spring.data.mongodb.database}") String databaseName) {
-    //     this.mongoClient = MongoClients.create(mongoUri);
-    //     this.database = mongoClient.getDatabase(databaseName);
-    // }
+    KafkaConsumer(@Value("${spring.data.mongodb.uri}") String mongoUri, @Value("${spring.data.mongodb.database}") String databaseName) {
+        this.mongoClient = MongoClients.create(mongoUri);
+        this.database = mongoClient.getDatabase(databaseName);
+    }
 
     // @KafkaListener(topics = "${spring.kafka.topic.name}", groupId = "${spring.kafka.consumer.group-id}")
     // public void consume(String message) {
