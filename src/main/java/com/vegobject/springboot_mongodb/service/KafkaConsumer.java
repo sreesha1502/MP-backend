@@ -78,7 +78,7 @@ public class KafkaConsumer {
 
     @KafkaListener(topics = "${spring.kafka.topic.name}", groupId = "${spring.kafka.consumer.group-id}", containerFactory = "kafkaListenerContainerFactory")
     public void consume(Poles data) {
-        LOGGER.info(String.format("$$ -> Consumed Message -> %s", data.getId()));
+        LOGGER.info(String.format("$$ -> Consumed Message -> %s", data));
 
         try {
             MongoCollection<Poles> collection = database.getCollection(collectionName, Poles.class);
