@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecProvider;
@@ -82,6 +83,11 @@ public class KafkaConsumer {
 
         try {
             MongoCollection<Poles> collection = database.getCollection(collectionName, Poles.class);
+            GeoJsonPoint location = new GeoJsonPoint(data.getGps().getCoordinates()[0],data.getGps().getCoordinates()[1]);
+            
+            System.out.println(location);
+            data.setGps(null);
+            data.setLocation(location);
             InsertOneResult result = collection.insertOne(data);
 
             if (result.wasAcknowledged()) {
