@@ -1,8 +1,11 @@
 package com.vegobject.springboot_mongodb.collection;
 
+import org.bson.codecs.pojo.annotations.BsonId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.AllArgsConstructor;
@@ -13,11 +16,13 @@ import lombok.NoArgsConstructor;
 @Document(collection = "poles")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @AllArgsConstructor
-@NoArgsConstructor 
+@NoArgsConstructor
 public class Poles {
 
     @Id
     private String id;
+    @Field("id")
+    private String poleId;
     private double altitude;
     private int speed;
     private int fixType;
@@ -26,6 +31,5 @@ public class Poles {
     private String capturedDate;
     private Geometry gps;
     private GeoJsonPoint location;
-
 
 }
