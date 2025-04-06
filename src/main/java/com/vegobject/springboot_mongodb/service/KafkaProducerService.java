@@ -8,22 +8,28 @@ import org.springframework.stereotype.Service;
 
 import com.vegobject.springboot_mongodb.collection.Poles;
 
-
 @Service
 @PropertySource(value = "classpath:application.properties")
 public class KafkaProducerService {
 
-    @Value(value="${spring.kafka.topic.name}")
+    @Value(value = "${spring.kafka.topic.name}")
     private String topicName;
 
     private final KafkaTemplate<String, Poles> kafkaTemplate;
-    
-    public KafkaProducerService(KafkaTemplate<String, Poles> kafkaTemplate) {
+    private final KafkaTemplate<String, byte[]> imageKafkaTemplate;
+
+    public KafkaProducerService(KafkaTemplate<String, Poles> kafkaTemplate,
+            KafkaTemplate<String, byte[]> imageKafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
+        this.imageKafkaTemplate = imageKafkaTemplate;
     }
 
     public void sendMessage(String key, Poles msg) {
-        ProducerRecord<String,Poles> record = new ProducerRecord<>(topicName,key,msg);
+        ProducerRecord<String, Poles> record = new ProducerRecord<>(topicName, key, msg);
         kafkaTemplate.send(record);
+    }
+
+    public void sendImage(byte[] imageBytes) {
+        imageKafkaTemplate.send("pole-images",imageBytes);
     }
 }

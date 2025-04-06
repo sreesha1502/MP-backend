@@ -3,8 +3,6 @@ package com.vegobject.springboot_mongodb.service;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import com.mongodb.ConnectionString;
-import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
@@ -17,8 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.bson.Document;
+
 import org.bson.codecs.configuration.CodecProvider;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
@@ -29,6 +26,10 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import static com.mongodb.MongoClientSettings.getDefaultCodecRegistry;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.Files;
 
 @Component
 @Service
@@ -42,6 +43,8 @@ public class KafkaConsumer {
 
     @Value("kafkaMsg")
     private String collectionName; // used @Value to read from app props file
+
+    private final String imgDir = "/var/www/kafkaTest/";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaConsumer.class);
 
@@ -79,7 +82,6 @@ public class KafkaConsumer {
 
     @KafkaListener(topics = "${spring.kafka.topic.name}", groupId = "${spring.kafka.consumer.group-id}", containerFactory = "kafkaListenerContainerFactory")
     public void consume(Poles data) {
-        LOGGER.info(String.format("$$ -> Consumed Message -> %s", data));
 
         try {
             MongoCollection<Poles> collection = database.getCollection(collectionName, Poles.class);
@@ -91,12 +93,26 @@ public class KafkaConsumer {
             InsertOneResult result = collection.insertOne(data);
 
             if (result.wasAcknowledged()) {
-                LOGGER.info("*** Message saved **** ");
+                LOGGER.info("*** kafka Message saved **** ");
             } else {
-                LOGGER.warn("*** Unable to save the message **** ");
+                LOGGER.warn("*** Unable to save message from kafka **** ");
             }
         } catch (Exception e) {
             LOGGER.error("Error while consuming message", e.getCause());
+        }
+    }
+
+    @KafkaListener(topics = "pole-images", groupId = "${spring.kafka.consumer.group-id}", containerFactory = "kafkaListenerContainerFactoryImage")
+    public void ConsumeImage(byte[] image) {
+        try {
+            String fileName = "image_" + System.currentTimeMillis() + ".jpg";
+            Path filePath = Paths.get(imgDir + fileName);
+            // Create the directory if it doesn't exist
+            Files.createDirectories(filePath.getParent());
+            Files.write(filePath, image);
+            LOGGER.info("Image saved to: " + filePath.toString());
+        } catch (Exception e) {
+            LOGGER.error("Error while consuming image", e.getCause());
         }
     }
 }
