@@ -29,7 +29,7 @@ public class KafkaProducerService {
         kafkaTemplate.send(record);
     }
 
-    public void sendImage(byte[] imageBytes) {
-        imageKafkaTemplate.send("pole-images",imageBytes);
+    public void sendImage(byte[] imageBytes, String fileName) {
+        imageKafkaTemplate.send("pole-images", fileName, imageBytes);
     }
 }

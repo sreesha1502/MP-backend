@@ -32,9 +32,17 @@ public class KafkaController {
 
     @PostMapping(value = "/sendImg", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadImg(@RequestParam("image") MultipartFile image) {
+        if (image.isEmpty()) {
+            return ResponseEntity.badRequest().body("File is empty");
+        }
         try {
+            String originalFileName = image.getOriginalFilename();
+            if (originalFileName == null || originalFileName.isEmpty()) {
+                return ResponseEntity.badRequest().body("File name is empty");
+            }
             byte[] imageBytes = image.getBytes();
-            kafkaProducerService.sendImage(imageBytes);
+            kafkaProducerService.sendImage(imageBytes, originalFileName);
+            
             return ResponseEntity.ok("Image sent to Kafka topic");
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error sending image to Kafka topic");

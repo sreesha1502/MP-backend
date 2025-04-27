@@ -10,6 +10,7 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.InsertOneResult;
 import com.vegobject.springboot_mongodb.collection.Poles;
 
+import org.springframework.messaging.handler.annotation.Header;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +23,7 @@ import org.bson.codecs.pojo.PojoCodecProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.scheduling.annotation.EnableAsync;
 import static com.mongodb.MongoClientSettings.getDefaultCodecRegistry;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
@@ -103,10 +105,10 @@ public class KafkaConsumer {
     }
 
     @KafkaListener(topics = "pole-images", groupId = "${spring.kafka.consumer.group-id}", containerFactory = "kafkaListenerContainerFactoryImage")
-    public void ConsumeImage(byte[] image) {
+    public void ConsumeImage(byte[] image, @Header(KafkaHeaders.RECEIVED_KEY) String fileName) {
         try {
-            String fileName = "image_" + System.currentTimeMillis() + ".jpg";
             Path filePath = Paths.get(imgDir + fileName);
+            LOGGER.info("Image file path: " + filePath.toString());
             // Create the directory if it doesn't exist
             Files.createDirectories(filePath.getParent());
             Files.write(filePath, image);
