@@ -1,6 +1,5 @@
 package com.vegobject.springboot_mongodb.collection;
 
-import org.bson.codecs.pojo.annotations.BsonId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.core.mapping.Document;
