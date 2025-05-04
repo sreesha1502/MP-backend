@@ -11,7 +11,7 @@ import lombok.Data;
 
 @Data
 @Builder
-@Document(collection = "poles")
+@Document(collection = "kafkaMsg")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CapturedDates {
 

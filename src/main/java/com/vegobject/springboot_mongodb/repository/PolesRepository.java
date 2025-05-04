@@ -29,4 +29,17 @@ public interface PolesRepository extends MongoRepository<Poles,String>{
 
     @Query("{capturedDate:'?0'}")
     List<Poles> findAllByCapturedDate(String capturedDate);
+
+    @Aggregation(pipeline = {
+        "{'$geoNear': {",
+        " 'near': {",
+        "   'type': 'Point',",
+        "   'coordinates': [ 13.199808267120028,65.83362894630547]",
+        " },",
+        " 'distanceField': 'distance',",
+        " 'maxDistance': 1,",
+        " 'spherical': true",
+        "}}"
+    })
+    List<Poles> findNearestPoles(String capturedData, double longitude, double latitude);
 }

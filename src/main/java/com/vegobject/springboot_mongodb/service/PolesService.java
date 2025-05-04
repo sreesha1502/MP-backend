@@ -10,4 +10,6 @@ public interface PolesService {
     Poles[] getPolesByDate(long cdate);
 
     CapturedDates getCapturedDateStrings();
+
+    Poles[] getPolesNear(String capturedData, double longitude, double latitude);
 }

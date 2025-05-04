@@ -12,7 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Document(collection = "poles")
+@Document(collection = "kafkaMsg")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,7 +20,7 @@ public class Poles {
 
     @Id
     private String id;
-    @Field("id")
+    @Field("poleId")
     private String poleId;
     private double altitude;
     private int speed;
