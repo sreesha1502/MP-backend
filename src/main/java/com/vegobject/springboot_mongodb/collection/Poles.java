@@ -30,7 +30,7 @@ public class Poles {
     private double courseOverGround;
     private double hdop;
     private String capturedDate;
-    @GeoSpatialIndexed(type = GeoSpatialIndexType.GEO_2DSPHERE)
+    // @GeoSpatialIndexed(type = GeoSpatialIndexType.GEO_2DSPHERE)
     private Geometry gps;
     @Field("location")
     @GeoSpatialIndexed(type = GeoSpatialIndexType.GEO_2DSPHERE)
