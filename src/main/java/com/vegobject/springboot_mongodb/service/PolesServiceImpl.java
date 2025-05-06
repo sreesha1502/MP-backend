@@ -1,16 +1,17 @@
 package com.vegobject.springboot_mongodb.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.aggregation.Aggregation;
-import org.springframework.data.mongodb.core.query.NearQuery;
-import org.springframework.data.mongodb.repository.Near;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.stereotype.Service;
 
-import org.springframework.data.geo.Point;
 import com.vegobject.springboot_mongodb.collection.CapturedDates;
 import com.vegobject.springboot_mongodb.collection.Poles;
 import com.vegobject.springboot_mongodb.repository.PolesRepository;
+
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
+import org.springframework.data.mongodb.core.query.NearQuery;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -41,14 +42,17 @@ public class PolesServiceImpl implements PolesService {
     }
 
     public Poles[] getPolesNear(String capturedData, double longitude, double latitude) {
-        Point location = new Point(longitude, latitude);
+        GeoJsonPoint location = new GeoJsonPoint(longitude, latitude);
         NearQuery nearQuery = NearQuery.near(location).spherical(true).maxDistance(1);
-        Aggregation aggregation = Aggregation.newAggregation(Aggregation.geoNear(nearQuery,"distance"));
-        List<Poles> poles = mongoTemplate.aggregate(aggregation, "KafkaMsg", Poles.class).getMappedResults();
-        if (poles == null || poles.isEmpty()) {
+        Aggregation aggregation = Aggregation.newAggregation(
+            Aggregation.geoNear(nearQuery, "distance")
+        );
+        AggregationResults<Poles> results = mongoTemplate.aggregate(aggregation, "kafka", Poles.class);
+        List<Poles> nearbyPoles = results.getMappedResults();
+        if (nearbyPoles.isEmpty()) {
             throw new RuntimeException("No nearby poles found.");// Return an empty array if no poles are found
         }
-        return poles.toArray(Poles[]::new);
+        return nearbyPoles.toArray(Poles[]::new);
     }
 
 }
